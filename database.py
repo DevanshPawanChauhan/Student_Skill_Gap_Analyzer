@@ -35,10 +35,39 @@ def create_tables():
         priority INTEGER
     )
     """)
-
     conn.commit()
     conn.close()
+
+def insert_job_roles():
+    conn=connect()
+    cursor=conn.cursor()
+
+    roles=["Data Analyst","Backend Develop","ML Engineer"]
+    for role in roles:
+        cursor.execute("INSERT INTO job_roles(role_name) VALUES(?)", (role,))
+    
+    conn.commit()
+    conn.close()
+
+def insert_job_skills():
+    conn=connect()
+    cursor=conn.cursor()
+    
+    #DataAnalystSkills(JobId=1)
+    skills = [
+        (1, "Python", 1),
+        (1, "SQL", 1),
+        (1, "Excel", 2),
+        (1, "Pandas", 1),
+        (1, "Data Visualization", 2)
+    ]
+    cursor.executemany("INSERT INTO job_required_skills(job_id,skill_name,priority) VALUES(?,?,?)",skills)
+    conn.commit()
+    conn.close()
+
 
 if __name__ == "__main__":
     create_tables()
     print("Database tables created successfully!")
+    insert_job_roles()
+    insert_job_skills()
