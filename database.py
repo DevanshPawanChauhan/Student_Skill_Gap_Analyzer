@@ -65,6 +65,16 @@ def insert_job_skills():
     conn.commit()
     conn.close()
 
+def get_job_skills(job_id):
+    conn=connect()
+    cursor=conn.cursor()
+    cursor.execute(
+        "select distinct skill_name from job_required_skills where job_id = ?",
+        (job_id,)
+    )
+    rows=cursor.fetchall()
+    skills=[row[0] for row in rows]
+    return skills 
 
 if __name__ == "__main__":
     create_tables()
